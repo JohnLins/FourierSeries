@@ -4,6 +4,7 @@
 #include <string.h>
 
 #define MAX 6000
+#define RADIUS 100
 
 int QUEUE[MAX],front=-1,rear=-1;
 
@@ -75,13 +76,17 @@ void remove_from_Q(int queue[])
 
 
 
+float function(float *x, float radius){
+    return radius * sin(*x);
+}
+
 
 
 
 
 int main(void)
 {
-    const int screenWidth = 1000;
+    const int screenWidth = 1500;
     const int screenHeight = 1000;
     float x = -120.0f;
    
@@ -108,27 +113,28 @@ int main(void)
             ClearBackground(RAYWHITE);
 
             
-            x+= 0.1;
+            x+= 0.01;
             
             
                 DrawLine(screenWidth/2, 0, screenWidth/2, screenHeight, BLACK);
                 DrawLine(0, screenHeight/2, screenWidth, screenHeight/2, BLACK);
                 
                 DrawCircleLines(screenWidth/2, screenHeight/2, 100, RED);
-                DrawLine(screenWidth/2, screenHeight/2, 100*cosf(x*.1) + screenWidth/2, 100*sinf(x*.1) + screenHeight/2, BLUE);
+                DrawLine(screenWidth/2, screenHeight/2, RADIUS*cosf(x) + screenWidth/2, RADIUS*sin(x) + screenHeight/2, BLUE);
+                DrawCircle(RADIUS*cosf(x) + screenWidth/2, RADIUS*sin(x) + screenHeight/2, 3, BLACK);
           
-                DrawLine(100*cosf(x*.1) + screenWidth/2, 100*sinf(x*.1) + screenHeight/2, x + screenWidth/2, 100*sinf(x * .1) + screenHeight/2, GREEN);
+               // DrawLine(100*cosf(x*.1) + screenWidth/2, 100*sinf(x*.1) + screenHeight/2, x + screenWidth/2, 100*sinf(x * .1) + screenHeight/2, GREEN);
                 
                 //*yPtr = ;
                 
-                insert_in_Q(QUEUE, 100*sinf(x*.1));// queueLen++;
+                insert_in_Q(QUEUE, function(&x, RADIUS));// queueLen++;
            
                 float x_new = 0.0;
                     for(int i=rear;i>=front;i--)
                     {
                         x_new += 0.1;
                     //printf("%d,",QUEUE[i]);
-                    DrawCircle(screenWidth/2 + x_new + 120, QUEUE[i] + screenHeight/2, 2, BLUE);
+                    DrawCircle(screenWidth/2 + x_new + 200, QUEUE[i] + screenHeight/2, 2, BLUE);
                     }
                     
                     
