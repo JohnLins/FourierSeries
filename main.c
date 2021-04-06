@@ -4,7 +4,7 @@
 #include <string.h>
 
 #define MAX 6000
-#define RADIUS 100
+//#define RADIUS 100
 
 int QUEUE[MAX],front=-1,rear=-1;
 
@@ -103,6 +103,8 @@ int main(void)
     
     //int queueLen = 0;
     
+    Vector3 r = (Vector3){150, 100, 50};
+    
 
     SetTargetFPS(60);  
     while (!WindowShouldClose())    
@@ -119,22 +121,26 @@ int main(void)
                 DrawLine(screenWidth/2, 0, screenWidth/2, screenHeight, BLACK);
                 DrawLine(0, screenHeight/2, screenWidth, screenHeight/2, BLACK);
                 
-                DrawCircleLines(screenWidth/2, screenHeight/2, 100, RED);
-                DrawLine(screenWidth/2, screenHeight/2, RADIUS*cosf(x) + screenWidth/2, RADIUS*sin(x) + screenHeight/2, BLUE);
-                DrawCircle(RADIUS*cosf(x) + screenWidth/2, RADIUS*sin(x) + screenHeight/2, 3, BLACK);
+                DrawCircleLines(screenWidth/2, screenHeight/2, r.x, RED);
+                
+                DrawLine(screenWidth/2, screenHeight/2, r.x*cosf(x) + screenWidth/2, r.x*sin(x) + screenHeight/2, BLUE);
+                DrawLine(r.x*cosf(x) + screenWidth/2, r.x*sin(x) + screenHeight/2,  (r.x*cosf(x) + screenWidth/2) + (r.y*cosf(4*x)), (r.x*sin(x) + screenHeight/2) + r.y*sinf(4*x) , RED);
+                DrawLine((r.x*cosf(x) + screenWidth/2) + (r.y*cosf(4*x)), (r.x*sin(x) + screenHeight/2) + r.y*sinf(4*x), ((r.x*cosf(x) + screenWidth/2) + (r.y*cosf(4*x))) + r.z*cosf(7*x),  ((r.x*sin(x) + screenHeight/2) + r.y*sinf(4*x)) + + r.z*sinf(7*x)  , GREEN);
+                
+                DrawCircle(r.x*cosf(x) + screenWidth/2, r.x*sin(x) + screenHeight/2, 3, BLACK);
           
                // DrawLine(100*cosf(x*.1) + screenWidth/2, 100*sinf(x*.1) + screenHeight/2, x + screenWidth/2, 100*sinf(x * .1) + screenHeight/2, GREEN);
                 
                 //*yPtr = ;
                 
-                insert_in_Q(QUEUE, function(&x, RADIUS));// queueLen++;
+                insert_in_Q(QUEUE,  ((r.x*sin(x) + screenHeight/2) + r.y*sinf(4*x)) + + r.z*sinf(7*x) );// queueLen++;
            
                 float x_new = 0.0;
                     for(int i=rear;i>=front;i--)
                     {
                         x_new += 0.1;
                     //printf("%d,",QUEUE[i]);
-                    DrawCircle(screenWidth/2 + x_new + 200, QUEUE[i] + screenHeight/2, 2, BLUE);
+                    DrawCircle(screenWidth/2 + x_new + 300, QUEUE[i] , 2, BLUE);
                     }
                     
                     
