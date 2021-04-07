@@ -3,15 +3,82 @@
 #include <stdio.h>
 #include <string.h>
 
-#define MAX 6000
-//#define RADIUS 100
+#define MAX 10000
+#define NUM 4
 
 int QUEUE[MAX],front=-1,rear=-1;
 
-/** function        :   insert_in_Q(),
-    to push an item into queue.
-**/
+
 void remove_from_Q(int queue[]);
+void insert_in_Q(int queue[],int ele);
+
+int main(void)
+{
+    const int screenWidth = 1500;
+    const int screenHeight = 1000;
+    
+    float x = -120.0f;
+    float r[NUM] = {240, 120, 110, 40};
+    float ar[NUM] = {1.1, 2.17, 3.3, 5.0};
+    float pos[NUM+1][2];
+    Color colors[NUM] = {RED, BLUE, YELLOW, PURPLE};
+    pos[0][0] = screenWidth/2; pos[0][1] = screenHeight/2;
+ 
+    
+
+    InitWindow(screenWidth, screenHeight, "Fourier Series");
+
+   
+    
+   
+    
+
+    SetTargetFPS(60);  
+    while (!WindowShouldClose())    
+    {
+        
+        BeginDrawing();
+
+            ClearBackground(RAYWHITE);
+            
+                DrawLine(screenWidth/2, 0, screenWidth/2, screenHeight, BLACK);
+                DrawLine(0, screenHeight/2, screenWidth, screenHeight/2, BLACK);
+
+
+                x+=0.01;
+                
+                for(int i = 0; i < NUM; i++){
+                    pos[i+1][0] = pos[i][0] + r[i]*sinf(x*ar[i]);
+                    pos[i+1][1] = pos[i][1] + r[i]*cosf(x*ar[i]);
+                    
+                    DrawLine(pos[i][0], pos[i][1], pos[i+1][0], pos[i+1][1], colors[i]);
+                    
+                    DrawCircleLines(pos[i+1][0], pos[i+1][1], r[i]/2, colors[i]);
+                    
+                    insert_in_Q(QUEUE,  pos[i+1][1] );
+                }
+            
+            
+                    DrawCircleLines(screenWidth/2, screenHeight/2, r[0], BLACK);
+                    
+           
+                    float x_new = 0.0;
+                    for(int i=rear;i>=front;i--)
+                    {
+                        x_new += 0.1;
+                        DrawCircle(screenWidth/2 + x_new + 300, QUEUE[i] , 2, BLUE);
+                    }
+                    
+                    
+                
+     
+        EndDrawing();
+    }
+    CloseWindow();       
+
+    return 0;
+}
+
 void insert_in_Q(int queue[],int ele)
 {
     if(rear==-1)
@@ -23,7 +90,6 @@ void insert_in_Q(int queue[],int ele)
     {
       remove_from_Q(QUEUE);
       queue[rear]=ele;
-       // printf("\nQUEUE is full.\n");
        
         return;
     }
@@ -32,32 +98,13 @@ void insert_in_Q(int queue[],int ele)
         rear++;
         queue[rear]=ele;
     }
-    //printf("\nItem inserted..");
 }
 
-/** function    :   display_Q(),
-    to display queue elements
-**/
-
-void display_Q(int queue[])
-{       int i;
-    if(rear==-1) { 
-    //printf("\nQUEUE is Empty.");
-    return; }
-    for(i=front;i<=rear;i++)
-    { printf("%d,",queue[i]); }
-
-}
-
-/** function    :   remove_from_Q(),
-    to remove (pop) an item from queue.
-**/
 void remove_from_Q(int queue[])
 {
     int ele;
     if(front==-1)
     {
-        //printf("QUEUE is Empty.");
         return;
     }
     else if(front==rear)
@@ -70,103 +117,6 @@ void remove_from_Q(int queue[])
         ele=queue[front];
         front++;
     }
-   // printf("\nItem removed : %d.",ele);
 }
-
-
-
-
-float function(float *x, float radius){
-    return radius * sin(*x);
-}
-
-
-
-
-
-int main(void)
-{
-    const int screenWidth = 1500;
-    const int screenHeight = 1000;
-    float x = -120.0f;
-   
- 
-    
-
-    InitWindow(screenWidth, screenHeight, "Damped Motion");
-
-   // float y;
-    //float *yPtr = &y;
-    
-    //char yDisplay[30];
-    //char xDisplay[30];
-    
-    //int queueLen = 0;
-    
-    Vector3 r = (Vector3){150, 100, 50};
-    
-
-    SetTargetFPS(60);  
-    while (!WindowShouldClose())    
-    {
-        
-        BeginDrawing();
-
-            ClearBackground(RAYWHITE);
-
-            
-            x+= 0.01;
-            
-            
-                DrawLine(screenWidth/2, 0, screenWidth/2, screenHeight, BLACK);
-                DrawLine(0, screenHeight/2, screenWidth, screenHeight/2, BLACK);
-                
-                DrawCircleLines(screenWidth/2, screenHeight/2, r.x, RED);
-                
-                DrawLine(screenWidth/2, screenHeight/2, r.x*cosf(x) + screenWidth/2, r.x*sin(x) + screenHeight/2, BLUE);
-                DrawLine(r.x*cosf(x) + screenWidth/2, r.x*sin(x) + screenHeight/2,  (r.x*cosf(x) + screenWidth/2) + (r.y*cosf(4*x)), (r.x*sin(x) + screenHeight/2) + r.y*sinf(4*x) , RED);
-                DrawLine((r.x*cosf(x) + screenWidth/2) + (r.y*cosf(4*x)), (r.x*sin(x) + screenHeight/2) + r.y*sinf(4*x), ((r.x*cosf(x) + screenWidth/2) + (r.y*cosf(4*x))) + r.z*cosf(7*x),  ((r.x*sin(x) + screenHeight/2) + r.y*sinf(4*x)) + + r.z*sinf(7*x)  , GREEN);
-                
-                DrawCircle(r.x*cosf(x) + screenWidth/2, r.x*sin(x) + screenHeight/2, 3, BLACK);
-          
-               // DrawLine(100*cosf(x*.1) + screenWidth/2, 100*sinf(x*.1) + screenHeight/2, x + screenWidth/2, 100*sinf(x * .1) + screenHeight/2, GREEN);
-                
-                //*yPtr = ;
-                
-                insert_in_Q(QUEUE,  ((r.x*sin(x) + screenHeight/2) + r.y*sinf(4*x)) + + r.z*sinf(7*x) );// queueLen++;
-           
-                float x_new = 0.0;
-                    for(int i=rear;i>=front;i--)
-                    {
-                        x_new += 0.1;
-                    //printf("%d,",QUEUE[i]);
-                    DrawCircle(screenWidth/2 + x_new + 300, QUEUE[i] , 2, BLUE);
-                    }
-                    
-                    
-                
-            
-            //sprintf(yDisplay, "%f", -y);
-            //sprintf(xDisplay, "%f", x);
-            
-            
-            
-            //DrawText("Displacment(y): ", 10, 10, 20, BLACK);
-           // DrawText(yDisplay, 170, 10, 20, BLACK);
-            
-         ///   DrawText("Time(x): ", 10, 50, 20, BLACK);
-         //   DrawText(xDisplay, 100, 50, 20, BLACK);
-            
-            
-          //  DrawText("Down key to reset time", 10, screenHeight - 30, 20, BLACK);
-          //  DrawText("Up key to update values", 10, screenHeight - 60, 20, BLACK);
-            
-        EndDrawing();
-    }
-    CloseWindow();       
-
-    return 0;
-}
-
 
 

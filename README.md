@@ -1,3 +1,5 @@
+<img src="fs2.gif"/>
+
 <img src="fs.gif"/>
 
 
