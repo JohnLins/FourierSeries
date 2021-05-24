@@ -1,7 +1,7 @@
-<img src="fs2.gif"/>
+<img src="assets/fs2.gif"/>
 
-<img src="fs.gif"/>
+<img src="assets/fs.gif"/>
 
 
 
-<img src="sin.gif"/>
+<img src="assets/sin.gif"/>
